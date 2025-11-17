@@ -6,5 +6,5 @@ python-dotenv
 passlib[bcrypt]
 pyjwt
 httpx
-pydantic
+pydantic[email]
 alembic   # optional if mau migration; contoh ini tidak memakai alembic
