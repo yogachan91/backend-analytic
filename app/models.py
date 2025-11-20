@@ -17,6 +17,23 @@ class User(Base):
 
     refresh_tokens = relationship("RefreshToken", back_populates="user")
 
+class Countip(Base):
+    __tablename__ = "countip"
+    id = Column(String, nullable=False, primary_key=True)
+    rule_name = Column(String, nullable=False)
+    destination_ip = Column(String, nullable=False)
+    destination_geo_country = Column(String, nullable=False)
+    event_severity_label = Column(String, nullable=False) # Column(BigInteger, default=0)
+    destination_port = Column(BigInteger, default=0)
+    counts = Column(BigInteger, default=0)
+    created_date = Column(TIMESTAMP(timezone=False))
+    source_ip = Column(String, nullable=False)
+    first_seen_event = Column(TIMESTAMP(timezone=False))
+    last_seen_event = Column(TIMESTAMP(timezone=False))
+    modul = Column(String, nullable=False)
+    sub_type = Column(String, nullable=False)
+    tipe = Column(String, nullable=False)
+
 class RefreshToken(Base):
     __tablename__ = "refresh_tokens"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)

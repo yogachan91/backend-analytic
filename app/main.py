@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from .database import engine
 from . import models
-from .routers import auth_routes, elastic_routes
+from .routers import auth_routes, elastic_routes, countip_routes
 from fastapi.middleware.cors import CORSMiddleware
 
 # create tables if not exist (quick setup)
@@ -19,3 +19,4 @@ app.add_middleware(
 
 app.include_router(auth_routes.router)
 app.include_router(elastic_routes.router)
+app.include_router(countip_routes.router)
