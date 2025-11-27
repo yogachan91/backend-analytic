@@ -55,14 +55,31 @@ async def proxy_elastic(timeframe: str, current_user: models.User = Depends(get_
     else:
         return resp.text
 
-@router.post("/summary")
-async def get_ws_url(current_user: models.User = Depends(get_current_user)):
-    """
-    Menghasilkan WebSocket URL lengkap dengan JWT.
-    Frontend bisa memanggil endpoint ini untuk mendapatkan URL WS yang valid.
-    """
-    token = auth.create_access_token({"sub": current_user.id, "type": "access"})
+@router.post("/auth/verify-token")
+async def verify_token(request: Request, db: Session = Depends(get_db)):
+    body = await request.json()
+    token = body.get("token")
 
-    ws_url = f"wss://103.150.227.205:8000/api/threats/events/summary/ws?token={token}"
+    if not token:
+        raise HTTPException(status_code=400, detail="Token is required")
 
-    return {"websocket_url": ws_url}
+    try:
+        payload = auth.decode_token(token)
+    except jwt.ExpiredSignatureError:
+        return {"valid": False, "reason": "expired"}
+    except Exception:
+        return {"valid": False, "reason": "invalid"}
+
+    if payload.get("type") != "access":
+        return {"valid": False, "reason": "invalid_type"}
+
+    user_id = payload.get("sub")
+
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        return {"valid": False, "reason": "user_not_found"}
+
+    return {
+        "valid": True,
+        "user_id": user_id
+    }
