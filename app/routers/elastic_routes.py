@@ -54,3 +54,15 @@ async def proxy_elastic(timeframe: str, current_user: models.User = Depends(get_
         return resp.json()
     else:
         return resp.text
+
+@router.get("/summary")
+async def get_ws_url(current_user: models.User = Depends(get_current_user)):
+    """
+    Menghasilkan WebSocket URL lengkap dengan JWT.
+    Frontend bisa memanggil endpoint ini untuk mendapatkan URL WS yang valid.
+    """
+    token = auth.create_access_token({"sub": current_user.id, "type": "access"})
+
+    ws_url = f"wss://103.150.227.205:8000/api/threats/events/summary/ws?token={token}"
+
+    return {"websocket_url": ws_url}
