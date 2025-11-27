@@ -55,7 +55,7 @@ async def proxy_elastic(timeframe: str, current_user: models.User = Depends(get_
     else:
         return resp.text
 
-@router.get("/summary")
+@router.post("/summary")
 async def get_ws_url(current_user: models.User = Depends(get_current_user)):
     """
     Menghasilkan WebSocket URL lengkap dengan JWT.
