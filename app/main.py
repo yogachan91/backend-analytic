@@ -11,7 +11,7 @@ app = FastAPI(title="FastAPI JWT + Proxy Elastic")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # atur ke domain anda di production
+    allow_origins=["http://103.150.227.205:3000"],  # atur ke domain anda di production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -4,6 +4,10 @@ from .. import schemas, crud, models, database, utils, auth
 from datetime import timedelta, datetime
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
+import jwt, time, os
+
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "rahasia")
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -73,3 +77,13 @@ def logout(body: schemas.TokenRefresh, db: Session = Depends(get_db)):
     # Revoke single refresh token
     crud.revoke_refresh_token(db, body.refresh_token)
     return {"detail": "Logged out"}
+
+def create_service_token():
+    """Token untuk service internal"""
+    payload = {
+        "type": "service",
+        "iss": "main-backend",
+        "exp": int(time.time()) + 60  # berlaku 1 menit
+    }
+    token = jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
+    return token
