@@ -54,7 +54,7 @@ def login(data: schemas.LoginIn, db: Session = Depends(get_db)):
 
 @router.post("/refresh")
 def refresh_token(body: schemas.TokenRefresh, db: Session = Depends(get_db)):
-    from . import auth as _auth
+    from .. import auth as _auth
     try:
         payload = _auth.decode_token(body.refresh_token)
     except Exception as e:
