@@ -32,26 +32,26 @@ def decode_token(token: str):
     except Exception as e:
         raise
 
-def create_service_token(expires_delta: Optional[timedelta] = None):
-    to_encode = {
-        "type": "service",
-        "iss": "main-backend"
-    }
+# def create_service_token(expires_delta: Optional[timedelta] = None):
+#     to_encode = {
+#         "type": "service",
+#         "iss": "main-backend"
+#     }
 
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=5)
+#     if expires_delta:
+#         expire = datetime.utcnow() + expires_delta
+#     else:
+#         expire = datetime.utcnow() + timedelta(minutes=5)
 
-    to_encode.update({"exp": expire})
+#     to_encode.update({"exp": expire})
 
-    encoded_jwt = jwt.encode(
-        to_encode,
-        JWT_SECRET_KEY,
-        algorithm=JWT_ALGORITHM
-    )
+#     encoded_jwt = jwt.encode(
+#         to_encode,
+#         JWT_SECRET_KEY,
+#         algorithm=JWT_ALGORITHM
+#     )
 
-    return encoded_jwt
+#     return encoded_jwt
 
 def create_service_token(exp_seconds=60):
     """
