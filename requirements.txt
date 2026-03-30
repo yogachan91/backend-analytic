@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+SQLAlchemy
+psycopg2-binary
+python-dotenv
+passlib[bcrypt]
+pyjwt
+httpx
+pydantic[email]
+alembic   # optional if mau migration; contoh ini tidak memakai alembic
+passlib[bcrypt]
+bcrypt==4.0.1
