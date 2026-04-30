@@ -37,6 +37,12 @@ def login(data: schemas.LoginIn, db: Session = Depends(get_db)):
     user = crud.get_user_by_email(db, data.email)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
+    if user.expired_date:
+        if user.expired_date < datetime.now():
+            raise HTTPException(
+                status_code=403,
+                detail="Account expired"
+            )
     if not utils.verify_password(data.password, user.pass_hash):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
